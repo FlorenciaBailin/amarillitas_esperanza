@@ -32,7 +32,6 @@ class Category:
     
     @classmethod
     def get_by_company_id(cls, form):
-        query = "SELECT * FROM categories JOIN companies ON categories.id = category_id WHERE companies.id = %(id)s"
+        query = "SELECT categories.*, companies.id FROM categories JOIN companies ON categories.id = category_id WHERE companies.id = %(id)s"
         result = connectToMySQL('amarillitas').query_db(query,form)
         return result
-    

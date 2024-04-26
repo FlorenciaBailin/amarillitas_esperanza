@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpg" href="static/img/favicon.jpg" class="favicon">
+    <link rel="icon" type="image/jpg" href="/static/img/favicon.jpg" class="favicon">
     <title>Amarillitas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
@@ -23,14 +23,6 @@
                             <button class="btn btn-light" type="submit">Buscar</button>
                         </div>
                     </form>
-                    <div>
-                        <select class="form-select h-50">
-                            <option selected>Elegir categoría</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
                     <div class="w-25">
                         <a href="/dashboard/company" class="btn btn-light">Perfil</a>
                         <a href="/edit/company" class="btn btn-light">Editar perfil</a>
@@ -45,18 +37,22 @@
         <main>
             <div class="container">
                 <div class="profile">
-                    <div class="photo">
-                        <img src="/static/img/profile.jpg" alt="Imagen de perfil" style="width: 15%; height: 15%; border-radius: 50%;">
+                    <div class="">
+                        {% if company.image is not none %}
+                            <img src="{{url_for('static', filename='img/'+company.image)}}" alt="Imagen de perfil" class="object-fit-cover" style="width: 13em; height: 13em; border-radius: 50%;">
+                        {% else %}
+                            <img src="/static/img/profile.jpg" style="width: 13em; height: 13em; border-radius: 50%;">
+                        {% endif %}
                     </div>
                     <div>
                         <h4 class="mt-2" style="color: white;">{{company.name}}</h4>
-                        <h5 class="mt-2" style="color: white;">{{company.category}}</h5>
+                        <h5 class="mt-2" style="color: white;">{{category.name}}</h5>
                     <a href="/edit/company/{{company.id}}" class="btn mt-2" style="background-color: #ffde59;">Editar perfil</a>
                 </div>
                 <br class="hidden">
                 <div class="col-5 p-3 justify-items-center" style="background-color: white; color:#343333; border-radius: 1em">
                     <h2>Nuevo producto:</h2>
-                    <form action="/new_product" method="POST">
+                    <form action="/new_product" method="POST" enctype="multipart/form-data">
                         {% with messages = get_flashed_messages(category_filter=['product']) %}
                             {% if messages %}
                                 <div class="alert alert-danger">
@@ -67,7 +63,8 @@
                             {% endif %}
                         {% endwith %}
                         <div>
-                            <img style="width:80%;" src="/static/img/empresa1.jpg" alt="foto producto">
+                            <label>Imagen:</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
                         </div>
                         <div>
                             <label>Nombre:</label>

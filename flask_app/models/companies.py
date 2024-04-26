@@ -20,13 +20,14 @@ class Company:
         self.password = data['password']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.image = data['image']
         
         self.category_id = data['category_id']
 
 
     @classmethod
     def save(cls, form):
-        query = "INSERT INTO companies( name, cuit, adress, description, phone, email, password, category_id) VALUES( %(name)s, %(cuit)s, %(adress)s, %(description)s, %(phone)s, %(email)s, %(password)s, %(category_id)s)"
+        query = "INSERT INTO companies(image, name, cuit, adress, description, phone, email, password, category_id) VALUES( %(image)s, %(name)s, %(cuit)s, %(adress)s, %(description)s, %(phone)s, %(email)s, %(password)s, %(category_id)s)"
         result = connectToMySQL('amarillitas').query_db(query, form)
         return result
     
@@ -75,7 +76,7 @@ class Company:
     
     @classmethod
     def get_all(cls):
-        query = "SELECT * FROM company"
+        query = "SELECT * FROM companies"
         results = connectToMySQL('amarillitas').query_db(query)
         return results
         
@@ -109,7 +110,7 @@ class Company:
     
     @classmethod
     def get_by_points(cls):
-        query= "SELECT companies.id, companies.name, round(avg(stars.points), 1) AS points FROM companies JOIN stars ON companies.id = company_id GROUP BY companies.id ORDER BY points desc LIMIT 6;"
+        query= "SELECT companies.id, companies.name, companies.image, round(avg(stars.points), 1) AS points FROM companies JOIN stars ON companies.id = company_id GROUP BY companies.id ORDER BY points desc LIMIT 6;"
         result = connectToMySQL('amarillitas').query_db(query)
         return result
     
@@ -123,7 +124,7 @@ class Company:
     
     @classmethod
     def update(cls, form):
-        query = "UPDATE companies SET name = %(name)s, description= %(description)s, cuit = %(cuit)s, adress= %(adress)s, category_id = %(category_id)s, phone = %(phone)s, email = %(email)s WHERE id = %(id)s"
+        query = "UPDATE companies SET name=%(name)s, description=%(description)s, cuit=%(cuit)s, email=%(email)s, phone=%(phone)s, adress=%(adress)s, category_id=%(category_id)s WHERE id= %(id)s"
         result = connectToMySQL('amarillitas').query_db(query, form)
         return result
     

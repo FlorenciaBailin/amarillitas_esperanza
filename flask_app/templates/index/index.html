@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpg" href="static/img/favicon.jpg" class="favicon">
+    <link rel="icon" type="image/jpg" href="/static/img/favicon.jpg" class="favicon">
     <title>Amarillitas</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -63,11 +63,10 @@
         <main>
             <div class="container-fluid">
                 <h2 class="mt-3 mb-3 ms-4"  style="color: #ffde59">MEJORES PUNTUACIONES</h2>
-                <div class="cards d-inline-flex overflow-x-auto justify-content-center mt-3">
-                    
+                <div class="row justify-content-center mt-3">
                     {% for company in companies %}
-                        <div class="card m-2 col-3 rounded-3 container-fluid" style="width: 20%;">
-                            <img src="/static/img/empresa1.jpg" class="card-img-top mt-3" alt="Empresa1">
+                        <div class="card m-2 col-2 rounded-3 container-fluid" style="width: 15em; height:20em">
+                            <img src="{{url_for('static', filename='img/'+company.image)}}" class="card-img-top mt-3 content-fit-cover" alt="Empresa" style="height: 8em;">
                             <div class="card-body d-block justify-content-center">
                                 <h5 class="card-title">{{company.name}}</h5>
                                 <div class="d-inline-flex ">
@@ -80,8 +79,7 @@
                             </div>
                         </div>
                     {% endfor %}
-                    
-            </div>
+                </div>
             <br class="hidden">
 
             <!-- REEMPLAZAR ESTO POR EL MAPA INTERACTIVO -->
@@ -95,11 +93,13 @@
 
             <div class="container">
                 <h3 class="mt-5"  style="color: #ffde59">NOVEDADES</h3>
-                <div class="row w-100 justify-content-start">
+                <div class="row w-100 justify-content-center">
                     {% for product in products %}
-                        <div class="col-2 m-2 justify-content-center" style="height: 16em">
-                            <div class="card rounded-3 overflow-y-auto" style="height: 16em; width: 12em">
-                                <img src="/static/img/empresa1.jpg" class="card-img-top" alt="Producto1" >
+                        <div class="col-2" style="width: 20%;">
+                            <div class="card rounded-3 overflow-y-auto" style="height: 18em;">
+                                <div style="height: 7em;">
+                                    <img src="{{url_for('static', filename='img/'+product.image)}}" class="card-img-top object-fit-cover" alt="Producto" style="height: 7em;">
+                                </div>
                                 <div class="card-body d-block justify-content-center">
                                     <p class="card-title" style="font-size:1.2em">{{product.name}}</p>
                                     <div class="d-inline-flex ">
@@ -122,9 +122,15 @@
                 <a href="#" class="mx-3" style="color: #ffde59">FAQ</a>
                 <a href="#" class="mx-3" style="color: #ffde59">TÉRMINOS Y CONDICIONES</a>
                 <a href="#" class="mx-3" style="color: #ffde59">CONTACTO</a>
-                <i class="bi bi-instagram mx-3" style="color: #ffde59"></i>
-                <i class="bi bi-facebook mx-3" style="color: #ffde59"></i>
-                <i class="bi bi-whatsapp mx-3" style="color: #ffde59"></i>
+                <a href="www.instagram.com">
+                    <i class="bi bi-instagram mx-3" style="color: #ffde59"></i>
+                </a>
+                <a href="/">
+                    <i class="bi bi-facebook mx-3" style="color: #ffde59"></i>
+                </a>
+                <a href="/">
+                    <i class="bi bi-whatsapp mx-3" style="color: #ffde59"></i>
+                </a>
             </div>
         </footer>
     </div>

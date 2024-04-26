@@ -1,6 +1,13 @@
 from flask import Flask, render_template, redirect, request, session, flash, jsonify, url_for
+import pymysql
+import pymysql.cursors
+
+db = pymysql.connect(host="localhost", port=3306, user="root", password="root", db="amarillitas")
 
 from flask_app import app
+
+from werkzeug.utils import secure_filename
+import os
 
 from flask_app.models.companies import Company
 from flask_app.models.users import User
@@ -33,8 +40,22 @@ def register_company():
     if not Company.validate_company(request.form):
         return redirect('/register')
     
+    if 'image' not in request.files:
+        flash('No has seleccionado imagen', 'register_company')
+        return redirect('/register')
+    
+    image = request.files['image']
+    if image.filename == '':
+        flash('Nombre de imagen vacío', 'register_company')
+        return redirect('/register')
+    
+    img_name = secure_filename(image.filename)
+    
+    image.save(os.path.join(app.config['UPLOAD_FOLDER'], img_name))
+    
     pass_encrypt = bcrypt.generate_password_hash(request.form['password'])
     form = {
+        "image": img_name,
         "name": request.form['name'],
         "cuit": request.form['cuit'],
         "adress": request.form['adress'],
@@ -44,6 +65,8 @@ def register_company():
         "email": request.form['email'],
         "password": pass_encrypt
     }
+    
+    
     
     new_id = Company.save(form)
     session['company_id'] = new_id
@@ -57,12 +80,15 @@ def dashboard_company():
     form = {"id": session['company_id']}
     company = Company.get_by_id(form)
     
-    category = Category.get_by_company_id(form)
+    form2 = {"id": session['company_id']}
+    categories = Category.get_by_company_id(form2)
     
-    dicc = {"company_id": session['company_id']}
+    dicc = {"id": session['company_id']}
     products = Product.get_by_company_id(dicc)
     
-    return render_template('company/dashboard_company.html', company=company, products=products, category=category)
+    category_select = Category.get_all()
+    
+    return render_template('company/dashboard_company.html', company=company, products=products, category=categories, category_select=category_select)
 
 
 @app.route('/login')
@@ -105,6 +131,7 @@ def update_company():
         return redirect('/')
     
     Company.update(request.form)
+    
     return redirect('/dashboard/company')
 
 
@@ -122,7 +149,7 @@ def company_profile(id):
     company = Company.get_by_id(dicc)
     points = Company.company_points(dicc)
     
-    form = {"company_id": id}
+    form = {"id": id}
     products = Product.get_by_company_id(form)
     
     categories = Category.get_all()
@@ -154,11 +181,20 @@ def show_categories(id):
     return render_template('index/categories.html', companies=companies, categories=categories, category=category)
 
 
-@app.route('/search', methods=['post'])
+@app.route('/search', methods=['GET','POST'])
 def search():
-    Company.get_by_search(request.form)
     
-    return redirect('/searches/' + request.form['search'])
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    if request.method == "POST" and "search" in request.form:
+        sql= "SELECT * FROM products WHERE name LIKE '%" + request.form['search'] + "%' or description LIKE '%" + request.form['search'] + "%'"
+    else:
+        return redirect('/')
+    cursor.execute(sql)
+    products = cursor.fetchall()
+    
+    categories = Category.get_all()
+    
+    return render_template('index/searches.html', products=products, categories=categories)
 
 
 @app.route('/searches/<string:search>')
@@ -166,5 +202,6 @@ def searches(search):
     
     form = {"search": search}
     companies= Company.get_by_search(form)
+    
     
     return render_template('index/searches.html', companies=companies)

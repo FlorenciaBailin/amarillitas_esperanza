@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpg" href="static/img/favicon.jpg" class="favicon">
+    <link rel="icon" type="image/jpg" href="/static/img/favicon.jpg" class="favicon">
     <title>Amarillitas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
@@ -23,14 +23,17 @@
                             <button class="btn btn-light" type="submit">Buscar</button>
                         </div>
                     </form>
-                    <div>
-                        <select class="form-select h-50">
-                            <option selected>Elegir categoría</option>
-                            <option >One</option>
-                            <option>Two</option>
-                            <option>Three</option>
-                        </select>
-                    </div>
+                    <form action="/select/category", method="post">
+                        <div  style="background-color: white; border-radius: 0.4em;">
+                            <label class="m-2" style="border-radius: 15%;">Categorías</label>
+                            <select name="category_id" style="border: none;"> 
+                                {% for category in categories %}
+                                    <option value="{{category.id}}">{{category.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="Buscar" class="btn btn-light">
+                        </div>
+                    </form>
                     <div class="w-25">
                         <a href="/" class="btn btn-light">Inicio</a>
                         <a href="/logout/user" class="btn btn-light">Cerrar Sesión</a>
@@ -61,14 +64,18 @@
 
 
             <!-- ACÁ HAY QUE CAMBIARLOS POR PRODUCTOS NUEVOS O ACTUALIZADOS RECIENTEMENTE -->
-                <h3 class="mt-5 container-fluid"  style="color: #ffde59">NOVEDADES</h3>
-                <div class="cards d-inline-flex justify-content-center mt-3" style="height: 20em;"> 
+            <div class="container">
+                <h3 class="mt-5"  style="color: #ffde59">NOVEDADES</h3>
+                <div class="row w-100 justify-content-center">
                     {% for product in products %}
-                            <div class="card m-2 col-2 rounded-3 overflow-y-auto">
-                                <img src="/static/img/empresa1.jpg" class="card-img-top" alt="Empresa1">
+                        <div class="col-2" style="width: 20%;">
+                            <div class="card rounded-3 overflow-y-auto" style="height: 18em;">
+                                <div style="height: 7em;">
+                                    <img src="{{url_for('static', filename='img/'+product.image)}}" class="card-img-top object-fit-cover" alt="Producto" style="height: 7em;">
+                                </div>
                                 <div class="card-body d-block justify-content-center">
-                                    <h5 class="card-title">{{product.name}}</h5>
-                                    <div >
+                                    <p class="card-title" style="font-size:1.2em">{{product.name}}</p>
+                                    <div class="d-inline-flex ">
                                         <p style="font-size: 1em;">{{product.description}}</p>
                                     </div>
                                     <div>
@@ -76,6 +83,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

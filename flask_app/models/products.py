@@ -1,5 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 
+
 from flask import flash
 
 
@@ -10,13 +11,14 @@ class Product:
         self.description = data['description']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.image = data['image']
         
         self.company_id = data['company_id']
 
 
     @classmethod
     def save(cls, form):
-        query = "INSERT INTO products (name, description, company_id) VALUES(%(name)s, %(description)s, %(company_id)s);"
+        query = "INSERT INTO products ( name, description, company_id, image) VALUES(%(name)s, %(description)s, %(company_id)s, %(image)s);"
         result = connectToMySQL('amarillitas').query_db(query, form)
         return result
 
@@ -36,7 +38,7 @@ class Product:
 
     @classmethod
     def get_by_company_id(cls,form):
-        query = "SELECT * FROM products WHERE company_id = %(company_id)s ORDER BY updated_at DESC"
+        query = "SELECT * FROM products WHERE company_id = %(id)s ORDER BY updated_at DESC"
         result = connectToMySQL('amarillitas').query_db(query, form)
         products = []
         for product in result:

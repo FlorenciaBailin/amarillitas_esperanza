@@ -1,8 +1,13 @@
 from flask import Flask, render_template, redirect, request, session, flash, jsonify
 from flask_app import app
 
+
+from werkzeug.utils import secure_filename
+import os
+
 from flask_app.models.companies import Company
 from flask_app.models.products import Product
+from flask_app.models.categories import Category
 
 
 @app.route('/add/product')
@@ -12,7 +17,9 @@ def add_p():
     
     form = {"id": session['company_id']}
     company = Company.get_by_id(form)
-    return render_template('products/add_product.html', company=company)
+    
+    category = Category.get_by_company_id(form)
+    return render_template('products/add_product.html', company=company, category=category)
 
 
 @app.route('/new_product', methods=['POST'])
@@ -24,7 +31,27 @@ def new_product():
         flash("Nombre y/o descripción deben tener más de dos caracteres", "product")
         return redirect('/add/product')
     
-    Product.save(request.form)
+    if 'image' not in request.files:
+        flash('No seleccionó ninguna imagen', 'product')
+        return redirect('/add/product')
+
+    image = request.files['image']
+    if image.filename == '':
+        flash('Nombre de imagen vacío', 'product')
+        return redirect('/add/product')
+    
+    image_name = secure_filename(image.filename)
+    
+    image.save(os.path.join(app.config['UPLOAD_FOLDER'],image_name))
+    
+    form = {
+        "name": request.form['name'],
+        "description": request.form['description'],
+        "company_id": request.form['company_id'],
+        "image": image_name
+    }
+    
+    Product.save(form)
     return redirect('/dashboard/company')
 
 
@@ -34,7 +61,9 @@ def show_product(id):
     dicc = {"id": id}
     product = Product.get_by_id(dicc)
     
-    return render_template('products/product.html', product=product)
+    categories= Category.get_all()
+    
+    return render_template('products/product.html', product=product, categories=categories)
 
 
 @app.route('/edit/product/<int:id>')

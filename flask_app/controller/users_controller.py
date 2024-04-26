@@ -5,6 +5,7 @@ from flask_app.models.users import User
 from flask_app.models.companies import Company
 from flask_app.models.products import Product
 from flask_app.models.stars import Star
+from flask_app.models.categories import Category
 
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
@@ -17,7 +18,6 @@ def register_user():
     
     pass_encrypt = bcrypt.generate_password_hash(request.form['password'])
     form = {
-        "type" : request.form['type'],
         "first_name": request.form['first_name'],
         "last_name": request.form['last_name'],
         "email": request.form['email'],
@@ -26,7 +26,7 @@ def register_user():
 
     nuevo_id = User.save(form)
     session['user_id'] = nuevo_id
-    return redirect('/dashboard_user')
+    return redirect('/dashboard/user')
 
 
 @app.route('/login/user', methods=['POST'])
@@ -53,8 +53,9 @@ def dashboard_user():
     user = User.get_by_id(form)
     
     products = Product.get_by_updated()
+    categories = Category.get_all()
     
-    return render_template('user/dashboard_user.html', user=user, products=products)
+    return render_template('user/dashboard_user.html', user=user, products=products, categories=categories)
 
 
 @app.route('/edit/user/<int:id>')
