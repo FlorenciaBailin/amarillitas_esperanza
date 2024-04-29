@@ -12,15 +12,15 @@ class User:
         self.id = data['id']
         self.first_name = data['first_name']
         self.last_name = data['last_name']
-        self.email = data['email']
-        self.password= data['password']
+        self.email = data['email_u']
+        self.password= data['password_u']
         self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        self.updated_at = data['upated_at']
 
 
     @classmethod
     def save(cls, form):
-        query = "INSERT INTO users ( first_name, last_name, email, password) VALUES(%(first_name)s, %(last_name)s, %(email)s, %(password)s);"
+        query = "INSERT INTO users ( first_name, last_name, email_u, password_u) VALUES(%(first_name)s, %(last_name)s, %(email)s, %(password)s);"
         result = connectToMySQL('amarillitas').query_db(query, form)
         return result
 
@@ -41,9 +41,9 @@ class User:
         
         query = "SELECT * FROM users WHERE email = %(email)s"
         results = connectToMySQL('amarillitas').query_db(query, form)
-        if len(results) >= 1:
+        """if len(results) >= 1:
             flash("Email registrado previamente", "register")
-            is_valid = False
+            is_valid = False"""
 
         if len(form['password']) < 6:
             flash("Contraseña debe tener al menos 6 caracteres", "register")
@@ -63,7 +63,7 @@ class User:
 
     @classmethod
     def get_by_email(cls, form):
-        query = "SELECT * FROM users WHERE email = %(email)s"
+        query = "SELECT * FROM users WHERE email_u = %(email)s"
         results = connectToMySQL('amarillitas').query_db(query, form)
         if len(results) == 1:
             user = cls(results[0])

@@ -13,6 +13,7 @@ from flask_app.models.companies import Company
 from flask_app.models.users import User
 from flask_app.models.products import Product
 from flask_app.models.stars import Star
+from flask_app.models.comments import Comment
 from flask_app.models.categories import Category
 
 
@@ -151,10 +152,11 @@ def company_profile(id):
     
     form = {"id": id}
     products = Product.get_by_company_id(form)
+    comments = Comment.get_by_company_id(form)
     
     categories = Category.get_all()
     
-    return render_template('company/company_profile.html', company=company, products=products, points=points, categories=categories)
+    return render_template('company/company_profile.html', company=company, products=products, points=points, categories=categories, comments=comments)
 
 
 @app.route('/select/category', methods=['POST'])

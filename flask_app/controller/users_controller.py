@@ -5,6 +5,7 @@ from flask_app.models.users import User
 from flask_app.models.companies import Company
 from flask_app.models.products import Product
 from flask_app.models.stars import Star
+from flask_app.models.comments import Comment
 from flask_app.models.categories import Category
 
 from flask_bcrypt import Bcrypt
@@ -90,4 +91,12 @@ def score():
         return redirect('/')
     
     Star.save(request.form)
+    return redirect('/')
+"""Codigo ingresado por Damian"""
+@app.route('/comment', methods=['POST'])
+def comment():
+    if 'user_id' not in session:
+        return redirect('/')
+    
+    Comment.save(request.form)
     return redirect('/')
