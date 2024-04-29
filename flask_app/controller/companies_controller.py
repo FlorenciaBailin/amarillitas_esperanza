@@ -183,6 +183,22 @@ def show_categories(id):
     return render_template('index/categories.html', companies=companies, categories=categories, category=category)
 
 
+@app.route('/select/neighborhood', methods=['POST'])
+def neighborhood():
+    Company.get_by_neighborhood(request.form)
+    return redirect('/barrio/' + request.form['neighborhood'])
+
+
+@app.route('/barrio/<string:neighborhood>')
+def nh_selected(neighborhood):
+    form = {"neighborhood": neighborhood}
+    companies = Company.get_by_neighborhood(form)
+    
+    neighborhood = neighborhood
+    return render_template('/index/neighborhood.html', companies=companies, neighborhood=neighborhood)
+
+
+
 @app.route('/search', methods=['GET','POST'])
 def search():
     

@@ -21,13 +21,14 @@ class Company:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.image = data['image']
+        self.neighborhood = data['neighborhood']
         
         self.category_id = data['category_id']
 
 
     @classmethod
     def save(cls, form):
-        query = "INSERT INTO companies(image, name, cuit, adress, description, phone, email, password, category_id) VALUES( %(image)s, %(name)s, %(cuit)s, %(adress)s, %(description)s, %(phone)s, %(email)s, %(password)s, %(category_id)s)"
+        query = "INSERT INTO companies(image, name, cuit, adress, description, phone, email, password, neighborhood, category_id) VALUES( %(image)s, %(name)s, %(cuit)s, %(adress)s, %(description)s, %(phone)s, %(email)s, %(password)s, %(neighborhood)s, %(category_id)s)"
         result = connectToMySQL('amarillitas').query_db(query, form)
         return result
     
@@ -124,7 +125,7 @@ class Company:
     
     @classmethod
     def update(cls, form):
-        query = "UPDATE companies SET name=%(name)s, description=%(description)s, cuit=%(cuit)s, email=%(email)s, phone=%(phone)s, adress=%(adress)s, category_id=%(category_id)s WHERE id= %(id)s"
+        query = "UPDATE companies SET name=%(name)s, description=%(description)s, cuit=%(cuit)s, email=%(email)s, phone=%(phone)s, adress=%(adress)s, category_id=%(category_id)s, neighborhood=%(neighborhood)s WHERE id= %(id)s"
         result = connectToMySQL('amarillitas').query_db(query, form)
         return result
     
@@ -141,3 +142,13 @@ class Company:
         query = "SELECT * FROM companies WHERE name LIKE '%()s'"
         results = connectToMySQL('amarillitas').query_db(query, form)
         return results
+    
+    
+    @classmethod
+    def get_by_neighborhood(cls, form):
+        query = "SELECT * FROM companies WHERE neighborhood= %(neighborhood)s"
+        result = connectToMySQL('amarillitas').query_db(query,form)
+        companies = []
+        for company in result:
+            companies.append(cls(company))
+        return companies
