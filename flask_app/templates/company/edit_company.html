@@ -7,6 +7,11 @@
     <title>Amarillitas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <!-- Ariel Avila - 29-04-2024 MB01: Se agrega el cdn para el uso de mapbox -->
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+        <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
 </head>
 <body style="background-color: #343333;">
     <div class="container-fluid">
@@ -57,8 +62,13 @@
                         <input type="text" name="phone" class="form-control" value="{{company.phone}}">
                     </div>
                     <div>
-                        <label>Dirección:</label>
-                        <input type="text" name="adress" class="form-control" value="{{company.adress}}">
+                        <label>Dirección actual:</label>
+                        <input type="text" name="adress_input" class="form-control" value="{{company.adress}}" disabled>
+                    </div>
+                    <!--Ariel Avila - 29-04-2024 MB01: Se añade el mapa para actualizar -->
+                    <div>
+                        <label>Actualiza tu direccion:</label>
+                        <div id="map" style="height: 400px; width: 100%;"></div>
                     </div>
                     <div>
                         <label>Categoría:</label>
@@ -75,6 +85,22 @@
                             <option {% if company.category_id == 10 %} selected {% endif %} value= 10 >Psicólogos</option>
                         </select>
                     </div>
+                    <div>
+                        <label>Barrio:</label>
+                        <select name="neighborhood" class="form-select">
+                            <option value="Centro">Centro</option>
+                            <option value="Este">Este</option>
+                            <option value="Norte">Norte</option>
+                            <option value="Oeste">Oeste</option>
+                            <option value="Sur">Sur</option>
+                        </select>
+                    </div>
+                    <!--Ariel Avila - 29-04-2024 MB01: Se añaden los input para la direccion -->
+                    <input type="hidden" name="adress" id="adress" value="">
+                    <input type="hidden" name="adress_lat" id="longitud" value="{{company.adress_long}}">
+                    <input type="hidden" name="adress_long" id="latitud" value="{{company.adress_lat}}">
+                    <input type="hidden" name="adress_old" class="form-control" value="{{company.adress}}">
+
                     <input type="hidden" name="id" value="{{session['company_id']}}">
                     <input type="submit" value="Actualizar" class="btn mt-2" style="background-color: #ffde59;">
                 </form>
@@ -93,5 +119,7 @@
             </div>
         </footer>
     </div>
+    <!--Ariel Avila - 29-04-2024 MB01: Se añade el script de js para el despliegue del mapa -->
+        <script src="{{ url_for('static', filename='js/script-editProfile.js') }}"></script>
 </body>
 </html>

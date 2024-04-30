@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, flash, jsonify, url_for
+from flask import Flask, render_template, redirect, request, session, flash, jsonify, url_for, json
 import pymysql
 import pymysql.cursors
 
@@ -55,15 +55,28 @@ def register_company():
     image.save(os.path.join(app.config['UPLOAD_FOLDER'], img_name))
     
     pass_encrypt = bcrypt.generate_password_hash(request.form['password'])
+    
+    # Ariel Avila - 29-04-2024 MB01: Recogemos el Json de datos de ubicacion
+    adress_dicc = json.loads(request.form['adress'])
+    # Dividimos cada uno de los elementos que nos interesan
+    latitud = adress_dicc['geometry']['coordinates'][0]
+    longitud = adress_dicc['geometry']['coordinates'][1]
+    adress = adress_dicc['place_name']
+
+    
     form = {
         "image": img_name,
         "name": request.form['name'],
         "cuit": request.form['cuit'],
-        "adress": request.form['adress'],
+        "adress": adress,
+        "adress_lat": latitud,
+        "adress_long": longitud,
         "description": request.form['description'],
         "phone": request.form['phone'],
         "category_id": request.form['category_id'],
         "email": request.form['email'],
+        # Ariel Avila - 29-04-2024 FIX: No estaba recopilando la informacion del neighborhood
+        "neighborhood": request.form['neighborhood'],
         "password": pass_encrypt
     }
     
@@ -131,7 +144,46 @@ def update_company():
     if 'company_id' not in session:
         return redirect('/')
     
-    Company.update(request.form)
+    # Ariel Avila - 29-04-2024 MB01: Se crea el form personalizado para las direcciones
+    adress = request.form['adress']
+    
+    if adress != "":
+        adress_dicc = json.loads(adress)
+        latitud = adress_dicc['geometry']['coordinates'][1]
+        longitud = adress_dicc['geometry']['coordinates'][0]
+        direccion = adress_dicc['place_name']
+    
+        form = {
+            'id' : request.form['id'],
+            'name' : request.form['name'],
+            'description' : request.form['description'],
+            'cuit' : request.form['cuit'],
+            'email' : request.form['email'],
+            'phone' : request.form['phone'],
+            'adress' : direccion,
+            'adress_lat' : latitud,
+            'adress_long' : longitud,
+            'category_id' : request.form['category_id'],
+            'neighborhood' : request.form['neighborhood']
+        }
+    
+    else:
+
+        form = {
+            'id' : request.form['id'],
+            'name' : request.form['name'],
+            'description' : request.form['description'],
+            'cuit' : request.form['cuit'],
+            'email' : request.form['email'],
+            'phone' : request.form['phone'],
+            'adress' : request.form['adress_old'],
+            'adress_lat' : request.form['adress_lat'],
+            'adress_long' : request.form['adress_long'],
+            'category_id' : request.form['category_id'],
+            'neighborhood' : request.form['neighborhood']
+        }
+    
+    Company.update(form)
     
     return redirect('/dashboard/company')
 

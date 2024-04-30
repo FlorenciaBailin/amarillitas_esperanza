@@ -14,6 +14,9 @@ class Company:
         self.name = data['name']
         self.cuit = data['cuit']
         self.adress = data['adress']
+        #Ariel Avila - 29-04-2024 MB01: Se agregan los campos faltantes de latitud y longitud
+        self.adress_lat = data['adress_lat']
+        self.adress_long = data['adress_long']
         self.description = data['description']
         self.phone = data['phone']
         self.email = data['email']
@@ -28,7 +31,8 @@ class Company:
 
     @classmethod
     def save(cls, form):
-        query = "INSERT INTO companies(image, name, cuit, adress, description, phone, email, password, neighborhood, category_id) VALUES( %(image)s, %(name)s, %(cuit)s, %(adress)s, %(description)s, %(phone)s, %(email)s, %(password)s, %(neighborhood)s, %(category_id)s)"
+        #Ariel Avila - 29-04-2024 MB01: Se agregan los campos faltantes de latitud y longitud
+        query = "INSERT INTO companies(image, name, cuit, adress, adress_lat, adress_long, description, phone, email, password, neighborhood, category_id) VALUES( %(image)s, %(name)s, %(cuit)s, %(adress)s, %(adress_lat)s, %(adress_long)s, %(description)s, %(phone)s, %(email)s, %(password)s, %(neighborhood)s, %(category_id)s)"
         result = connectToMySQL('amarillitas').query_db(query, form)
         return result
     
@@ -125,7 +129,7 @@ class Company:
     
     @classmethod
     def update(cls, form):
-        query = "UPDATE companies SET name=%(name)s, description=%(description)s, cuit=%(cuit)s, email=%(email)s, phone=%(phone)s, adress=%(adress)s, category_id=%(category_id)s, neighborhood=%(neighborhood)s WHERE id= %(id)s"
+        query = "UPDATE companies SET name=%(name)s, description=%(description)s, cuit=%(cuit)s, email=%(email)s, phone=%(phone)s, adress=%(adress)s, adress_lat=%(adress_lat)s, adress_long=%(adress_long)s, category_id=%(category_id)s, neighborhood=%(neighborhood)s WHERE id= %(id)s"
         result = connectToMySQL('amarillitas').query_db(query, form)
         return result
     

@@ -123,3 +123,19 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+-- -----------------------------------------------------
+-- Ariel Avila - 29-04-2024 FIX: Agregamos al script las categoriaS
+-- -----------------------------------------------------
+
+INSERT INTO categories (name) VALUES ("Ferretería");
+INSERT INTO categories (name) VALUES ("Heladerías");
+INSERT INTO categories (name) VALUES ("Indumentaria");
+INSERT INTO categories (name) VALUES ("Minimercados");
+INSERT INTO categories (name) VALUES ("Zapaterías");
+INSERT INTO categories (name) VALUES ("Abogados");
+INSERT INTO categories (name) VALUES ("Gasistas");
+INSERT INTO categories (name) VALUES ("Mecánicos");
+INSERT INTO categories (name) VALUES ("Médicos");
+INSERT INTO categories (name) VALUES ("Psicólogos");
