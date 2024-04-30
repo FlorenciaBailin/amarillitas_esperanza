@@ -92,7 +92,9 @@ def score():
     
     Star.save(request.form)
     return redirect('/')
-"""Codigo ingresado por Damian"""
+
+
+# """Codigo ingresado por Damian"""
 @app.route('/comment', methods=['POST'])
 def comment():
     if 'user_id' not in session:

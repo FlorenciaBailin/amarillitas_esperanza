@@ -144,62 +144,50 @@
                     <button type="submit" class="btn btn-success">Enviar comentario</button>
                 </form>
             </div>
+            <br>
+            <br>
+            <br>
+            <div class="container">
+                <h4 style="color:#ffde59">COMENTARIOS DE LA EMPRESA:</h4>
+                <hr style="color:#ffde59">
+                <!-- <table style="border-radius: 1em;">
+                    <thead>
+                        <tr style="background-color: #ffde59; color:#343333">
+                            <th>Comentario</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead> -->
+                    {% for comment in comments %}
+                        <p class="fst-italic" style="color: white; font-size: 1.3em">{{comment.text}}</p>
+                        <p style="color: white">{{comment.created_at}}</p>
+                        <hr style="color:#ffde59">
+                    {% endfor %}
 
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="container">
-        <h4 style="color:#ffde59">COMENTARIOS DE LA EMPRESA:</h4>
-        {% if comments %}
-        <table>
-            <thead>
-                <tr style="background-color: #ffde59; color:#343333">
-                    <th>Comentario</th>
-                    <th>Fecha Comentario</th>
-                </tr>
-            </thead>
-            {% for comment in comments %}
-            <tbody>
-                <tr>
-                    <td style="background-color: #c5c1b3; color:#141414">{{comment.text}}</td>
-                    <td style="background-color: #c5c1b3; color:#141414">{{comment.created_at}}</td>
-                </tr>
-            </tbody>
-            {% endfor %}
-        </table>
-        {% else %}
-        <div class="col-5 mt-3 me-3 p-2"
-            style="background-color: #ffde59; color:#343333; border-radius: 5px; margin: 10px 0px 10px 0px;">
-            <h3>No hay comentarios para esta empresa, se el primero en comentar</h3>
-        </div>
-        {% endif %}
-    </div>
-    <!--AQUI TERMINA CODIGO DE DAMIAN-->
-    <div class="container">
-        <h4 style="color:#ffde59">PRODUCTOS O SERVICIOS:</h4>
-        <div class="row w-100 justify-content-start">
-            {% for product in products %}
-            <div class="col-2 mt-3 justify-content-center" style="height: 16em; width: 20%">
-                <div class="card rounded-3 overflow-y-auto" style="height: 16em;">
-                    <img src="{{url_for('static', filename='img/'+product.image)}}" class="card-img-top"
-                        alt="{{product.name}}">
-                    <div class="card-body d-block justify-content-center">
-                        <p class="card-title" style="font-size:1.2em; font-weight:bold">{{product.name}}</p>
-                        <div class="d-inline-flex ">
-                            <p style="font-size: 1em;">{{product.description}}</p>
+            </div>
+            <!--AQUI TERMINA CODIGO DE DAMIAN-->
+
+            <div class="container">
+                <h4 style="color:#ffde59">PRODUCTOS O SERVICIOS:</h4>
+                <div class="row w-100 justify-content-start">
+                    {% for product in products %}
+                        <div class="col-2 mt-3 justify-content-center" style="height: 16em; width: 20%">
+                            <div class="card rounded-3 overflow-y-auto" style="height: 16em;">
+                                <img src="{{url_for('static', filename='img/'+product.image)}}" class="card-img-top" alt="{{product.name}}" >
+                                <div class="card-body d-block justify-content-center">
+                                    <p class="card-title" style="font-size:1.2em; font-weight:bold">{{product.name}}</p>
+                                    <div class="d-inline-flex ">
+                                        <p style="font-size: 1em;">{{product.description}}</p>
+                                    </div>
+                                    <div>
+                                        <a href="/product/{{product.id}}" class="btn" style="background-color: #ffde59; color:#343333">Ver</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <a href="/product/{{product.id}}" class="btn"
-                                style="background-color: #ffde59; color:#343333">Ver</a>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-    </main>
+        </main>
 
     <footer class="my-5">
         <div class="d-flex justify-content-center" style="font-size: 1em;">
