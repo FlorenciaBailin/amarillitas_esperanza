@@ -117,23 +117,19 @@
             <br>
             <div class="container">
                 <h4 style="color:#ffde59">COMENTARIOS DE LA EMPRESA:</h4>
-                <table>
+                <hr style="color:#ffde59">
+                <!-- <table style="border-radius: 1em;">
                     <thead>
                         <tr style="background-color: #ffde59; color:#343333">
                             <th>Comentario</th>
-                            <th>Fecha Comentario</th>
+                            <th>Fecha</th>
                         </tr>
-                    </thead>
+                    </thead> -->
                     {% for comment in comments %}
-                    <tbody>
-                        <tr >
-                            <td style="background-color: #c5c1b3; color:#141414">{{comment.text}}</td>
-                            <td style="background-color: #c5c1b3; color:#141414">{{comment.created_at}}</td>
-                        </tr>
-                    </tbody>
+                        <p class="fst-italic" style="color: white; font-size: 1.3em">{{comment.text}}</p>
+                        <p style="color: white">{{comment.created_at}}</p>
+                        <hr style="color:#ffde59">
                     {% endfor %}
-
-                </table>
 
             </div>
             <!--AQUI TERMINA CODIGO DE DAMIAN-->
