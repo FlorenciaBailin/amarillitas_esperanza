@@ -15,21 +15,43 @@ CREATE SCHEMA IF NOT EXISTS `amarillitas` DEFAULT CHARACTER SET utf8 ;
 USE `amarillitas` ;
 
 -- -----------------------------------------------------
+-- Table `amarillitas`.`categories`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `amarillitas`.`categories` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NULL,
+  `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `amarillitas`.`companies`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `amarillitas`.`companies` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NULL,
   `cuit` VARCHAR(45) NULL,
-  `adress` VARCHAR(255) NULL,
+  `adress` TEXT NULL,
+  `adress_lat` VARCHAR(45) NULL,
+  `adress_long` VARCHAR(45) NULL,
   `description` TEXT NULL,
   `phone` VARCHAR(45) NULL,
-  `category` VARCHAR(100) NULL,
   `email` VARCHAR(100) NULL,
+  `neighborhood` VARCHAR(45) NULL,
   `password` VARCHAR(255) NULL,
   `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`))
+  `category_id` INT NOT NULL,
+  `image` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_companies_categories1_idx` (`category_id` ASC) VISIBLE,
+  CONSTRAINT `fk_companies_categories1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `amarillitas`.`categories` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -40,10 +62,10 @@ CREATE TABLE IF NOT EXISTS `amarillitas`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
-  `email_u` VARCHAR(255) NULL,
-  `password_u` VARCHAR(255) NULL,
+  `email` VARCHAR(255) NULL,
+  `password` VARCHAR(255) NULL,
   `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-  `upated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -104,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `amarillitas`.`stars` (
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `company_id` INT NOT NULL,
   `user_id` INT NOT NULL,
+  `points` TINYINT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_stars_companies1_idx` (`company_id` ASC) VISIBLE,
   INDEX `fk_stars_users1_idx` (`user_id` ASC) VISIBLE,
@@ -123,6 +146,7 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 
 -- -----------------------------------------------------
