@@ -1,57 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpg" href="/static/img/favicon.jpg" class="favicon">
-    <title>Iniciar sesión</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <style>
-        .nav-link {
-            /* Cambia el color de fondo de la pestaña no activa */
-            background-color: #ffffff;
-            /* Agrega otros estilos según tus preferencias */
-        }
-    </style>
-</head>
-<body  style="background-color: #343333;">
-    <div class="container-fluid">
-        <header>
-            <img src="/static/img/banner.jpg" class="img-fluid mt-2 w-100" alt="Banner">
-            <div class="navbar mt-2 rounded-4" style="background-color: #ffde59;">
-                <div class="container-fluid w-100">
-                    <a class="navbar-brand w-20" href="/">
-                        <img src="/static/img/nav.png" alt="NavImg" class="w-75">
-                    </a>
-                    <form action="/search" class="w-30">
-                        <div class="input-group w-100">
-                            <input type="text" class="form-control" name="search" >
-                            <button class="btn btn-light" type="submit">Buscar</button>
-                        </div>
-                    </form>
-                    
-                    <form action="/select/category", method="post">
-                        <div  style="background-color: white; border-radius: 0.4em;">
-                            <label class="m-2" style="border-radius: 15%;">Categorías</label>
-                            <select name="category_id" style="border: none;"> 
-                                {% for category in categories %}
-                                    <option value="{{category.id}}">{{category.name}}</option>
-                                {% endfor %}
-                            </select>
-                            <input type="submit" value="Buscar" class="btn btn-light">
-                        </div>
-                    </form>
-
-                    <div class="w-25">
-                        <a href="/register" class="btn btn-light">Registrarse</a>
-                        <a href="/" class="btn btn-light">Inicio</a>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <br class="hidden">
-
+{% extends "base_script_4.html" %}
+{% block content %}
         <main>
             <div class="container d-flex justify-content-evenly">
 
@@ -120,70 +68,13 @@
                                     </div>
                                 </form>
                             </div>
-                            <!-- Agrega aquí tus campos de administrador -->
                         </div>
                     </div>
                 </div>
-            
-
-
-
-
-
-
-
-
-
-
-                <!-- <div class="col-5" style="background-color: white; padding: 1em; border-radius: 1.2em">
-                    <h2>Inicio de sesión:</h2>
-                    <form action="/login/user" method="POST">
-                        {% with messages = get_flashed_messages(category_filter=['login']) %}
-                            {% if messages %}
-                                <div class="alert alert-danger">
-                                    {% for message in messages %}
-                                        <p>{{message}}</p>
-                                    {% endfor %}
-                                    </div>
-                            {% endif %}
-                        {% endwith %}
-                        <div>
-                            <label>Email</label>
-                            <input type="text" name="email" class="form-control">
-                        </div>
-                        <div>
-                            <label>Contraseña</label>
-                            <input type="password" name="password" class="form-control">
-                        </div>
-                        <div>
-                            <input type="submit" value="Iniciar sesión" class="btn mt-2" style="background-color: #ffde59;">
-                        </div>
-                    </form>
-                </div> -->
             </div>
         </main>
 
-
-        <footer class="my-5">
-            <div class="d-flex justify-content-center"  style="font-size: 1em;">
-                <a href="#" class="mx-3"  style="color:#ffde59">SOBRE NOSOTROS</a>
-                <a href="#" class="mx-3" style="color: #ffde59">FAQ</a>
-                <a href="#" class="mx-3" style="color: #ffde59">TÉRMINOS Y CONDICIONES</a>
-                <a href="#" class="mx-3" style="color: #ffde59">CONTACTO</a>
-                <a href="https://instagram.com" class="icon-link mb-2" target="_blank">
-                    <i class="bi bi-instagram mx-3" style="color: #ffde59"></i>
-                </a>
-                <a href="https://facebook.com" class="icon-link mb-2" target="_blank">
-                    <i class="bi bi-facebook mx-3" style="color: #ffde59"></i>
-                </a>
-                <a href="https://api.whatsapp.com/send?phone=543496440164" class="icon-link mb-2" target="_blank">
-                    <i class="bi bi-whatsapp mx-3" style="color: #ffde59"></i>
-                </a>
-            </div>
-        </footer>
-    </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+{% endblock %}
