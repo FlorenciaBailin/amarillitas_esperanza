@@ -59,8 +59,8 @@ def register_company():
     # Ariel Avila - 29-04-2024 MB01: Recogemos el Json de datos de ubicacion
     adress_dicc = json.loads(request.form['adress'])
     # Dividimos cada uno de los elementos que nos interesan
-    latitud = adress_dicc['geometry']['coordinates'][0]
-    longitud = adress_dicc['geometry']['coordinates'][1]
+    latitud = adress_dicc['geometry']['coordinates'][1]
+    longitud = adress_dicc['geometry']['coordinates'][0]
     adress = adress_dicc['place_name']
 
     
